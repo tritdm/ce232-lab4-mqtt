@@ -35,6 +35,7 @@
 #define MQTT_BROKER_USERNAME "M3ExGxt4y2DmCkvN8CAqK0tYyUD4GLEgD9D7uV0TNt3dCoRAOfPo58brRCkncOrF"
 #define MQTT_BROKER_PASSWORD ""
 #define MQTT_BROKER_CLIENTID "lop1nhom9"
+#define TOPIC_1 "Test"
 
 
 static const char *TAG = "MQTT_EXAMPLE";
@@ -66,10 +67,10 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-        msg_id = esp_mqtt_client_publish(client, "Test", "data_3", 0, 1, 0);
+        msg_id = esp_mqtt_client_publish(client, TOPIC_1, "pre sub", 0, 1, 0);
         ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
 
-        msg_id = esp_mqtt_client_subscribe(client, "Test", 1);
+        msg_id = esp_mqtt_client_subscribe(client, TOPIC_1, 1);
         ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
         break;
     case MQTT_EVENT_DISCONNECTED:
@@ -78,7 +79,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 
     case MQTT_EVENT_SUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
-        msg_id = esp_mqtt_client_publish(client, "Test", "data", 0, 0, 0);
+        msg_id = esp_mqtt_client_publish(client, TOPIC_1, "post sub", 0, 0, 0);
         ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
         break;
     case MQTT_EVENT_UNSUBSCRIBED:
